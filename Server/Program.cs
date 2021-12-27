@@ -1,4 +1,5 @@
 using HotChocolate.AspNetCore;
+using HotChocolate.AspNetCore.Serialization;
 using Server;
 using Server.Domain;
 
@@ -16,6 +17,7 @@ builder.Services.AddGraphQLServer()
     ;
 
 builder.Services.AddTransient<UserService>();
+builder.Services.AddTransient<IHttpResultSerializer, CustomHttpResultSerializer>();
 
 var app = builder.Build();
 

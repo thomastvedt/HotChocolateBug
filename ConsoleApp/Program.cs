@@ -19,11 +19,8 @@ var test2 = result2.Data?.SaveUserEmail.Email == "valid@email.com";
 var result3 = await client.SaveUserEmail.ExecuteAsync("123", "invalid_email");
 var shouldBeError = result3.IsErrorResult();
 
-// This is false, but I think it should be true??:
+// With our CustomHttpResultSerializer this is now true!:
 var shouldBeExpectedErrorCode = result3.Errors.First().Code == "CUSTOM_ERROR_CODE";
 
-var err = result3.Errors.First();
-Console.WriteLine("Expected error code CUSTOM:ERROR_CODE..");
-Console.WriteLine("Error CODE:" + (err.Code ?? "NULL")); // :-(
-Console.WriteLine("Error CODE is hidden inside err.Extensions.:");
-Console.WriteLine(err.Extensions["body"]);
+if (shouldBeExpectedErrorCode)
+    Console.WriteLine("Great success!");
