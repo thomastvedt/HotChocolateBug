@@ -2,16 +2,13 @@ namespace Server.Domain;
 
 public class UserService
 {
-    public Task<User> GetUser(string id)
+    public Task<User> GetUser(int userId)
     {
-        return Task.FromResult(new User(id, "Thomas", 39, "thomas@mail.com"));
+        return Task.FromResult(new User(userId, "Thomas", 39, "thomas@gulost.net", 1));
     }
 
-    public Task<User> SaveUserEmail(string id, string email)
+    public Task<User> SaveUserTimezone(int userId, int timezoneId)
     {
-        if (!email.Contains("@"))
-            throw new CustomDomainException("Invalid email");
-
-        return Task.FromResult(new User(id, "Thomas", 39, email));
+        return Task.FromResult(new User(userId, "Thomas", 39, "thomas@gulost.net", timezoneId));
     }
 }

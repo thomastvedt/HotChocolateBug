@@ -1,10 +1,8 @@
-using HotChocolate.AspNetCore.Authorization;
 using Server.Domain;
 
-namespace Server;
+namespace Server.GraphQL;
 
 [ExtendObjectType("Query")]
-[Authorize]
 public class UserQuery
 {
     public Task<string> Ping(string message)
@@ -12,7 +10,7 @@ public class UserQuery
         return Task.FromResult(message);
     }
 
-    public async Task<User> GetUser(string userId, [Service] UserService userService)
+    public async Task<User> GetUser(int userId, [Service] UserService userService)
     {
         return await userService.GetUser(userId);
     }

@@ -1,6 +1,7 @@
 using HotChocolate.AspNetCore;
 using Server;
 using Server.Domain;
+using Server.GraphQL;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,8 +12,13 @@ builder.Services.AddGraphQLServer()
     .AddTypeExtension<UserQuery>()
     .AddMutationType(d => d.Name("Mutation"))
     .AddTypeExtension<UserMutation>()
-    .AddErrorFilter<ErrorFilter>()
-    .AddType<User>()
+    .AddType<UserType>()
+    .AddType<TimeZoneType>()
+    .AddGlobalObjectIdentification()
+    .AddMutationConventions(new MutationConventionOptions()
+    {
+        ApplyToAllMutations = false
+    })
     ;
 
 builder.Services.AddTransient<UserService>();

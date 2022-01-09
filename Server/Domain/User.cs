@@ -1,3 +1,3 @@
 namespace Server.Domain;
 
-public record User(string Id, string Name, int Age, string Email);
+public record User(int Id, string Name, int Age, string Email, int TimeZoneId);
