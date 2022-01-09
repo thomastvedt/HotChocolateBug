@@ -1,16 +1,71 @@
-# Quick reproduction HotChocolate StrawberryShake bug
+# Reproduction possible input mutation bug?
 
 How to reproduce:
 - run server (HotChocolate)
-- run console app (StrawberryShake)
+- Open Banana Cake Pop
 
-** Expected result: **  
-When running the console app using the generated StrawberryShake client, I expected that
-my custom error code was returned. 
+The following mutations work:
+```graphql
+mutation {
+  updateMyTimeZoneParam(
+    timezoneId:"VGltZVpvbmUKaTE="
+  ) {
+  id
+  }
+}
 
-``` 
-var result3 = await client.SaveUserEmail.ExecuteAsync("123", "invalid_email");
-var shouldBeExpectedErrorCode = result3.Errors.First().Code == "CUSTOM_ERROR_CODE";
 ```
 
-But `shouldBeExpectedErrorCode` = false..
+```graphql
+mutation {
+  updateMyTimeZoneBoilerplate(input: {
+    timezoneId:"VGltZVpvbmUKaTE="
+  }) {
+    entity {
+      id
+    }
+  }
+}
+
+```
+
+This one doesn't:
+
+```graphql
+mutation {
+  updateMyTimeZone(input: {
+    timezoneId:"VGltZVpvbmUKaTE="
+  }) {
+    user {
+      id
+    }
+  }
+}
+
+```
+
+Gives the following error message: 
+
+```graphql
+{
+  "errors": [
+    {
+      "message": "Unable to convert the value of the argument `timezoneId` to `System.Int32`. Check if the requested type is correct or register a custom type converter.",
+      "locations": [
+        {
+          "line": 2,
+          "column": 3
+        }
+      ],
+      "path": [
+        "updateMyTimeZone"
+      ],
+      "extensions": {
+        "fieldName": "updateMyTimeZone",
+        "argumentName": "timezoneId",
+        "requestedType": "System.Int32"
+      }
+    }
+  ]
+}
+```

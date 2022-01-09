@@ -1,8 +1,0 @@
-mutation SaveUserEmail($userId: String!, $email: String!) {
-    saveUserEmail(userId: $userId, email: $email) {
-        id
-        name
-        age
-        email
-    }
-}
